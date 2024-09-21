@@ -1,1 +1,1 @@
-# python_variable_annotations
+Holberton School, Python - Variable Annotations Project
