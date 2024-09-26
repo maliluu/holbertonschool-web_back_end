@@ -1,28 +1,8 @@
 #!/usr/bin/env python3
-"""Module contains function that returns pagination range
-Imports:
-    Tuple: Tuple type annotation
-    List: List type anotaton
-    csv: csv module
-"""
+""" Simple pagination """
 import csv
+import math
 from typing import List, Tuple
-
-
-def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """Function returns pagination range
-
-    Args:
-        page (int): page number
-        page_size (int): page size
-
-    Returns:
-        Tuple[int, int]: start to end range
-    """
-    start = (page - 1) * page_size
-    end = page * page_size
-
-    return ((start, end))
 
 
 class Server:
@@ -45,17 +25,36 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """Gets specific data
         """
-        assert page > 0
-        assert page_size > 0
-        assert isinstance(page, int)
-        assert isinstance(page_size, int)
-        myRange = index_range(page, page_size)
-        start = myRange[0]
-        end = myRange[1]
-        filtered_list = self.dataset()
+            Get the page
 
-        if start >= len(filtered_list):
-            return []
-        return filtered_list[start:end]
+            Args:
+                page: Current page
+                page_size: Total size of the page
+
+            Return:
+                List of the pagination done
+        """
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
+
+        range: Tuple = index_range(page, page_size)
+        pagination: List = self.dataset()
+
+        return (pagination[range[0]:range[1]])
+
+
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
+    """
+    Range of the page
+    Args:
+        page: Current page
+        page_size: Total size of the page
+    Return:
+        tuple with the range start and end size page
+    """
+
+    final_size: int = page * page_size
+    start_size: int = final_size - page_size
+
+    return (start_size, final_size)
