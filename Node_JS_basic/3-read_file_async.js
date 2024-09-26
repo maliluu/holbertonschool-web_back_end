@@ -1,52 +1,37 @@
 const fs = require('fs').promises;
-const parse = require('csv-parse');
 
 async function countStudents(path) {
   try {
-    const fileContent = await fs.readFile(path, 'utf-8');
-
-    const records = await new Promise((resolve, reject) => {
-      parse(
-        fileContent,
-        {
-          columns: true,
-          skip_empty_lines: true,
-        },
-        (err, data) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(data);
-          }
-        },
-      );
-    });
-
-    const fieldMap = new Map();
-
-    for (const record of records) {
-      const { field } = record;
-      const { firstName } = record;
-
-      if (!fieldMap.has(field)) {
-        fieldMap.set(field, []);
+    const data = await fs.readFile(path, 'utf8');
+    const linesArray = data.split('\n');
+    let numberOfStudents = 0;
+    const studentsByField = {};
+    linesArray.shift();
+    for (const line of linesArray) {
+      const splittedLine = line.split(',');
+      if (splittedLine.length === 4) {
+        numberOfStudents += 1;
+        if (splittedLine[3] in studentsByField) {
+          studentsByField[splittedLine[3]].push(splittedLine[0]);
+        } else {
+          studentsByField[splittedLine[3]] = [splittedLine[0]];
+        }
       }
-
-      fieldMap.get(field).push(firstName);
     }
-
-    console.log(`Number of students: ${records.length}`);
-
-    for (const [field, names] of fieldMap.entries()) {
-      console.log(
-        `Number of students in ${field}: ${names.length}. List: ${names.join(
-          ', ',
-        )}`,
-      );
+    console.log(`Number of students: ${numberOfStudents}`);
+    // eslint-disable-next-line guard-for-in
+    for (const field in studentsByField) {
+      let strList = '';
+      for (const student of studentsByField[field]) {
+        if (strList.length > 0) {
+          strList += ', ';
+        }
+        strList += student;
+      }
+      console.log(`Number of students in ${field}: ${studentsByField[field].length}. List: ${strList}`);
     }
-  } catch (error) {
-    console.error('Cannot load the database');
-    throw error;
+  } catch (err) {
+    throw new Error('Cannot load the database');
   }
 }
 

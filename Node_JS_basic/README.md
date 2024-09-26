@@ -1,1 +1,2 @@
-Holberton School NodeJS project
+# 0x12 - NodeJS Basics
+Basics on NodeJS
