@@ -1,30 +1,25 @@
 #!/usr/bin/env python3
-"""Module contains function that checks async run time
-
-Imports:
-    1-concurrent_coroutines: async function to check
-    time: time module for getting time elapsed
-    asyncio: async module
-"""
+""" Measure the runtime """
 import time
 import asyncio
-n_wait = __import__('1-concurrent_coroutines').wait_n
+from typing import List
 
 
-async def measure_time(n: int, max_delay: int) -> float:
-    """Function meausres async function runtime
+wait_n = __import__('1-concurrent_coroutines').wait_n
 
-    Args:
-        n (int): num of times to run async function
-        max_delay (int): max delay of function
 
-    Returns:
-        float: return time
+def measure_time(max_delay: int = 10, n: int = 0) -> float:
     """
-    start_time = time.perf_counter()
-    asyncio.run(n_wait(n, max_delay))
-    end_time = time.perf_counter()
+        Args:
+            max_delay: max wait
+            n: spawn function
 
-    elapsed = end_time - start_time
+        Return:
+            float measure time
+    """
+    first_time = time.perf_counter()
+    asyncio.run(wait_n(max_delay, n))
+    elapsed = time.perf_counter() - first_time
+    total_time = elapsed / n
 
-    return elapsed / n
+    return total_time

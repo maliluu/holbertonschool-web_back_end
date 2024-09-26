@@ -1,34 +1,30 @@
 #!/usr/bin/env python3
-"""Module contains function that takes two integers
-
-Imports:
-    List: module for list type annotation
-    wait_random: function delays for n seconds and returns n
-"""
+""" Coroutine at the same time witha sync """
+import asyncio
+import random
 from typing import List
-random_wait = __import__('0-basic_async_syntax').wait_random
 
 
-async def wait_n(n: int, max_delay: int) -> List[float]:
-    """Function takes integers and calls wait_random function
+wait_random = __import__('0-basic_async_syntax').wait_random
 
-    Args:
-        n (int): num of times to call wait_random
-        max_delay (int): Num of seconds to delay wait_random
 
-    Returns:
-        List[float]: List of wait_random returns
+async def wait_n(n: int = 0, max_delay: int = 10) -> List[float]:
     """
-    myList: List[float] = []
-    i: int = 0
+        Args:
+            max_delay: max wait
+            n: spawn function
 
-    while i < n:
-        result = await random_wait(max_delay)
-        myList.append(result)
-        i += 1
+        Return:
+            float time random
+    """
+    delays: List[float] = []
+    tasks: List = []
 
-    for end in range(len(myList), 1, -1):
-        for j in range(1, end):
-            if myList[j - 1] > myList[j]:
-                myList[j - 1], myList[j] = myList[j], myList[j - 1]
-    return myList
+    for _ in range(n):
+        tasks.append(wait_random(max_delay))
+
+    for task in asyncio.as_completed((tasks)):
+        delay = await task
+        delays.append(delay)
+
+    return delays
