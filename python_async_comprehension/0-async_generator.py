@@ -1,23 +1,20 @@
 #!/usr/bin/env python3
-"""Module contains function async generator
-
-Imports:
-    asyncio: asyncio module
-    random: random module
-"""
+""" Async Generator """
 import asyncio
 import random
-from typing import AsyncGenerator
+from typing import Generator
 
 
-async def async_generator() -> AsyncGenerator[float, None]:
-    """Function yields certain value between 0 and 10
-
-    Yields:
-        _type_: Value between 0 and 10
+async def async_generator() -> Generator[float, None, None]:
     """
-    i = 0
-    while i < 10:
+        Generate numbers
+
+        Args:
+            void
+
+        Return:
+            float time random
+    """
+    for _ in range(10):
         await asyncio.sleep(1)
         yield random.uniform(0, 10)
-        i += 1

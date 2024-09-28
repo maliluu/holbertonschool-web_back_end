@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""Module contains function asyn_comprehension
-
-Imports:
-    typing: type annotation module
-    asyncio: asycio module
-"""
-import typing
+""" Async comprenhesion gen """
 import asyncio
-async_gen = __import__("0-async_generator").async_generator
+from typing import List
 
 
-async def async_comprehension() -> typing.List[float]:
-    """Function returns list
+async_generator = __import__('0-async_generator').async_generator
 
-    Returns:
-        typing.List[float]: list
+
+async def async_comprehension() -> List[float]:
     """
-    my_list = [f async for f in async_gen()]
-    return my_list
+        Generate numbers with async comprenhension
+
+        Args:
+            void
+
+        Return:
+            float random numbers
+    """
+    return ([i async for i in async_generator()])
