@@ -1,2 +1,3 @@
-// Script selects which database to use
+// Make a database
 use my_db
+
