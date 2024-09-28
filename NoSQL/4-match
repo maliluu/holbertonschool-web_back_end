@@ -1,3 +1,2 @@
-// All matches
-db.school.find({ name: "Holberton school" })
-
+// Script lists all documents with name = "Holberton School"
+db.school.find({name: "Holberton school"}).pretty()
